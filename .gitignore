@@ -1,0 +1,9 @@
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+bin/
+CMakeFiles/
+googletest-build/
+googletest-download/
+lib/
+src/libcvrp_lib.a
