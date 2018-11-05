@@ -1,4 +1,7 @@
+#include "cvrp.h"
+
 int main(int argc, char const *argv[])
 {
-    return 0;
+    auto cvrp = Cvrp();
+    return cvrp.readInput();
 }
