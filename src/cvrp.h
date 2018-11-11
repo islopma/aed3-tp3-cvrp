@@ -1,3 +1,6 @@
+#ifndef CVRP_H_INCLUDED
+#define CVRP_H_INCLUDED
+
 #include <string>
 #include <vector>
 
@@ -6,11 +9,11 @@ using namespace std;
 struct Node
 {
     int id;
-    float x;
-    float y;
+    double x;
+    double y;
     int demand;
 
-    Node(const int id, const float x, const float y, const int demand);
+    Node(const int id, const double x, const double y, const int demand);
 };
 
 class Cvrp
@@ -27,4 +30,8 @@ private:
 public:
     Cvrp();
     int readInput();
+    vector<Node> getNodes();
+    int getCapacity();
 };
+
+#endif

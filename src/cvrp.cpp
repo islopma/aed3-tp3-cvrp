@@ -4,7 +4,7 @@
 #include <map>
 #include <sstream>
 
-Node::Node(const int id, const float x, const float y, const int demand)
+Node::Node(const int id, const double x, const double y, const int demand)
     : id(id), x(x), y(y), demand(demand) {}
 
 Cvrp::Cvrp()
@@ -15,6 +15,14 @@ Cvrp::Cvrp()
     _capacity = 0;
     _nodes = vector<Node>();
     _depotId = 0;
+}
+
+vector<Node> Cvrp::getNodes(){
+    return this->_nodes;
+}
+
+int Cvrp::getCapacity(){
+    return this->_capacity;
 }
 
 int Cvrp::readInput()
@@ -72,7 +80,7 @@ int Cvrp::readInput()
         }
     }
     // Data part
-    auto node_coord = map<int, pair<float, float>>();
+    auto node_coord = map<int, pair<double, double>>();
     auto demand_section = map<int, int>();
     for (auto i = 0; i < 3; ++i)
     {
@@ -85,7 +93,7 @@ int Cvrp::readInput()
                 auto id = stoi(node_tokens[0]);
                 auto x = stof(node_tokens[1]);
                 auto y = stof(node_tokens[2]);
-                node_coord.insert(pair<int, pair<float, float>>(id, pair<float, float>(x, y)));
+                node_coord.insert(pair<int, pair<double, double>>(id, pair<double, double>(x, y)));
             }
         }
         else if (tokens[0] == "DEMAND_SECTION")
