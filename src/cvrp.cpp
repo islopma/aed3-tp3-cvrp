@@ -1,4 +1,5 @@
 #include "cvrp.h"
+#include <cmath>
 #include <iostream>
 #include <iterator>
 #include <map>
@@ -6,6 +7,19 @@
 
 Node::Node(const int id, const double x, const double y, const int demand)
     : id(id), x(x), y(y), demand(demand) {}
+
+double Node::distance(const Node &other)
+{
+    // calculate L2 norm (this - other)
+    return sqrt(pow(this->x - other.x, 2) + pow(this->y - other.y, 2));
+}
+
+Route::Route()
+{
+    nodes = vector<Node>();
+    cost = 0;
+    demand = 0;
+}
 
 Cvrp::Cvrp()
 {
@@ -129,6 +143,52 @@ int Cvrp::readInput()
         _nodes.push_back(Node(id, x, y, demand));
     }
     return 0;
+}
+
+vector<vector<double>>& Cvrp::getCosts()
+{
+    if (&_costs) return _costs;
+    auto nodesNumber = _nodes.size();
+    _costs = vector<vector<double>>(nodesNumber, vector<double>(nodesNumber, -1));
+    for (size_t i = 0; i < nodesNumber - 1; ++i)
+    {
+        auto first = _nodes[i];
+        for (size_t j = i + 1; j < nodesNumber; ++j)
+        {
+            auto second = _nodes[j];
+            auto distance = first.distance(second);
+            _costs[i][j] = distance;
+            _costs[j][i] = distance;
+        }
+    }
+    return _costs;
+}
+
+void Cvrp::addNodeToRoute(Route &route, Node &node, const bool &isLast)
+{
+    auto isFirst = route.nodes.size() == 0;
+    route.demand += node.demand;
+    node.routeId = route.id;
+    auto costs = getCosts();
+    if (isFirst) {
+        route.nodes.push_back(node);
+        route.cost += 2 * costs[_depotId][node.id];
+    }
+    else
+    {
+        if (isLast)
+        {
+            auto linkNode = route.nodes.back();
+            route.nodes.push_back(node);
+            route.cost += costs[_depotId][node.id] + costs[linkNode.id][node.id] - costs[_depotId][linkNode.id];
+        }
+        else
+        {
+            auto linkNode = route.nodes.front();
+            route.nodes.insert(route.nodes.begin(), node);
+            route.cost += costs[_depotId][node.id] + costs[linkNode.id][node.id] - costs[_depotId][linkNode.id];
+        }
+    }
 }
 
 vector<string> Cvrp::tokenizeLine()

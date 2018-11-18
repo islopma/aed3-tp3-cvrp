@@ -12,8 +12,20 @@ struct Node
     double x;
     double y;
     int demand;
+    int routeId;
 
     Node(const int id, const double x, const double y, const int demand);
+    double distance(const Node &other);
+};
+
+struct Route
+{
+    int id;
+    vector<Node> nodes;
+    double cost;
+    int demand;
+
+    Route();
 };
 
 class Cvrp
@@ -25,6 +37,7 @@ private:
     int _capacity;
     vector<Node> _nodes;
     int _depotId;
+    vector<vector<double>> _costs;
 
     vector<string> tokenizeLine();
 public:
@@ -32,6 +45,8 @@ public:
     int readInput();
     vector<Node> getNodes();
     int getCapacity();
+    vector<vector<double>>& getCosts();
+    void addNodeToRoute(Route &route, Node &node, const bool &isLast);
 };
 
 #endif
