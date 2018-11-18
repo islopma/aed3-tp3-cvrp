@@ -4,6 +4,7 @@
 #include <utility>
 
 #include <iostream>
+#include <cassert>
 
 vector<pair<double, int>> sort_by_angle(vector<Node>& nodes){
     vector<pair<double, int>> angle_ids;
@@ -61,6 +62,11 @@ void swap_edges(vector<Node>& nodes, int i, int j){
     reverse(begin(nodes)+j, begin(nodes)+i+1);
 }
 
+void make_start_on_deposit(vector<Node>& nodes){
+    auto i = find_if(begin(nodes), end(nodes), [](const Node &a){return a.id == 1;});
+    rotate(begin(nodes), i, end(nodes));
+}
+
 void route(vector<Node>& nodes){
     int n = nodes.size();
     
@@ -77,4 +83,6 @@ void route(vector<Node>& nodes){
             }
         }
     }
+
+    make_start_on_deposit(nodes);
 }
