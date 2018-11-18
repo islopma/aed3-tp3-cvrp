@@ -9,4 +9,6 @@ vector<vector<Node>> clusterize(vector<Node>& nodes, int capacity);
 
 void route(vector<Node>& nodes);
 
+double get_cost(vector<Node>& nodes);
+
 #endif

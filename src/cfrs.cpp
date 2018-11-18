@@ -86,3 +86,12 @@ void route(vector<Node>& nodes){
 
     make_start_on_deposit(nodes);
 }
+
+double get_cost(vector<Node>& nodes){
+    double res = 0;
+    int n = nodes.size();
+    for (int i = 0; i < n; ++i){
+        res += hypot(nodes[i].x - nodes[(i+1)%n].x, nodes[i].y - nodes[(i+1)%n].y);
+    }
+    return res;
+}
