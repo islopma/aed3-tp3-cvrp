@@ -8,11 +8,11 @@ using namespace std;
 
 struct Saving
 {
-    Node first;
-    Node second;
+    Node *first;
+    Node *second;
     double cost;
 
-    Saving(const Node &first, const Node &second, const double cost);
+    Saving(Node *first, Node *second, const double cost);
 };
 
 class Savings
@@ -22,6 +22,7 @@ private:
 
     vector<Saving> getSavings();
 public:
+    Savings(Cvrp &cvrp);
     vector<Route> findBestRoutes();
 };
 

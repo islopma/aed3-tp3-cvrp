@@ -21,7 +21,7 @@ struct Node
 struct Route
 {
     int id;
-    vector<Node> nodes;
+    vector<Node*> nodes;
     double cost;
     int demand;
 
@@ -43,8 +43,9 @@ private:
 public:
     Cvrp();
     int readInput();
-    vector<Node> getNodes();
-    int getCapacity();
+    vector<Node>& getNodes();
+    int& getCapacity();
+    int& getDepotId();
     vector<vector<double>>& getCosts();
     void addNodeToRoute(Route &route, Node &node, const bool &isLast);
 };
