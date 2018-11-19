@@ -28,7 +28,7 @@ vector<vector<Node>> clusterize(vector<Node>& nodes, int capacity){
 
     vector<vector<Node>> clusters;
     
-    for(int i = 0; i < n; i++){
+    for(int i = 0; i < n;){
         vector<Node> cluster = {nodes[0]};
         double cluster_demand = 0;
         while(i < n && cluster_demand + nodes[angle_ids[i].second].demand <= capacity){

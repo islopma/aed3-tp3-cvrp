@@ -28,12 +28,5 @@ int main(int argc, char const *argv[])
     }
     cout << total_cost << endl;
 
-    // for(int i = 0; i < (int) clusters.size(); ++i){        
-    //     for(auto &node: clusters[i]){
-    //         std::cout << node.x << " " << node.y << " " << i << std::endl;
-    //     }
-    // }
-
-
     return 0;
 }
