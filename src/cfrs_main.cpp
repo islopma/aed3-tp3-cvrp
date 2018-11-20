@@ -27,6 +27,6 @@ int main(int argc, char const *argv[])
         }
     }
     cout << total_cost << endl;
-
+    
     return 0;
 }

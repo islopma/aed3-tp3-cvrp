@@ -6,10 +6,11 @@
 #include <iostream>
 #include <cassert>
 
-vector<pair<double, int>> sort_by_angle(vector<Node>& nodes){
+vector<pair<double, int>> sort_by_angle(vector<Node> &nodes)
+{
     vector<pair<double, int>> angle_ids;
-    
-    for(int i = 1; i < (int)nodes.size(); i++)
+
+    for (int i = 1; i < (int)nodes.size(); i++)
     {
         double y = nodes[i].y - nodes[0].y;
         double x = nodes[i].x - nodes[0].x;
@@ -21,17 +22,20 @@ vector<pair<double, int>> sort_by_angle(vector<Node>& nodes){
     return angle_ids;
 }
 
-vector<vector<Node>> clusterize(vector<Node>& nodes, int capacity){
+vector<vector<Node>> clusterize(vector<Node> &nodes, int capacity)
+{
 
     auto angle_ids = sort_by_angle(nodes);
     int n = angle_ids.size();
 
     vector<vector<Node>> clusters;
-    
-    for(int i = 0; i < n;){
+
+    for (int i = 0; i < n;)
+    {
         vector<Node> cluster = {nodes[0]};
         double cluster_demand = 0;
-        while(i < n && cluster_demand + nodes[angle_ids[i].second].demand <= capacity){
+        while (i < n && cluster_demand + nodes[angle_ids[i].second].demand <= capacity)
+        {
             cluster.push_back(nodes[angle_ids[i].second]);
             cluster_demand += nodes[angle_ids[i].second].demand;
             ++i;
@@ -40,43 +44,49 @@ vector<vector<Node>> clusterize(vector<Node>& nodes, int capacity){
     }
 
     return clusters;
-
 }
 
-bool is_better_swap(vector<Node>& nodes, int i, int j){
+bool is_better_swap(vector<Node> &nodes, int i, int j)
+{
     int n = nodes.size();
-    
-    auto current_distance = 
-        hypot(nodes[i].x - nodes[(i+1)%n  ].x, nodes[i].y - nodes[(i+1)%n  ].y) + 
-        hypot(nodes[j].x - nodes[(j-1+n)%n].x, nodes[j].y - nodes[(j-1+n)%n].y);
 
-    auto new_distance = 
-        hypot(nodes[j].x - nodes[(i+1)%n  ].x, nodes[j].y - nodes[(i+1)%n  ].y) + 
-        hypot(nodes[i].x - nodes[(j-1+n)%n].x, nodes[i].y - nodes[(j-1+n)%n].y);
+    auto current_distance =
+        hypot(nodes[i].x - nodes[(i + 1) % n].x, nodes[i].y - nodes[(i + 1) % n].y) +
+        hypot(nodes[j].x - nodes[(j - 1 + n) % n].x, nodes[j].y - nodes[(j - 1 + n) % n].y);
+
+    auto new_distance =
+        hypot(nodes[j].x - nodes[(i + 1) % n].x, nodes[j].y - nodes[(i + 1) % n].y) +
+        hypot(nodes[i].x - nodes[(j - 1 + n) % n].x, nodes[i].y - nodes[(j - 1 + n) % n].y);
 
     return new_distance < current_distance;
-
 }
 
-void swap_edges(vector<Node>& nodes, int i, int j){
-    reverse(begin(nodes)+j, begin(nodes)+i+1);
+void swap_edges(vector<Node> &nodes, int i, int j)
+{
+    reverse(begin(nodes) + j, begin(nodes) + i + 1);
 }
 
-void make_start_on_deposit(vector<Node>& nodes){
-    auto i = find_if(begin(nodes), end(nodes), [](const Node &a){return a.id == 1;});
+void make_start_on_deposit(vector<Node> &nodes)
+{
+    auto i = find_if(begin(nodes), end(nodes), [](const Node &a) { return a.id == 1; });
     rotate(begin(nodes), i, end(nodes));
 }
 
-void route(vector<Node>& nodes){
+void route(vector<Node> &nodes)
+{
     int n = nodes.size();
-    
+
     bool swapped_in_last_iteration = true;
 
-    while(swapped_in_last_iteration){
+    while (swapped_in_last_iteration)
+    {
         swapped_in_last_iteration = false;
-        for(int i = 0; i < n; ++i){
-            for(int j = i < n-1 ? 0 : 1; j < i; ++j){
-                if (is_better_swap(nodes, i, j)){
+        for (int i = 0; i < n; ++i)
+        {
+            for (int j = i < n - 1 ? 0 : 1; j < i; ++j)
+            {
+                if (is_better_swap(nodes, i, j))
+                {
                     swap_edges(nodes, i, j);
                     swapped_in_last_iteration = true;
                 }
@@ -87,11 +97,13 @@ void route(vector<Node>& nodes){
     make_start_on_deposit(nodes);
 }
 
-double get_cost(vector<Node>& nodes){
+double get_cost(vector<Node> &nodes)
+{
     double res = 0;
     int n = nodes.size();
-    for (int i = 0; i < n; ++i){
-        res += hypot(nodes[i].x - nodes[(i+1)%n].x, nodes[i].y - nodes[(i+1)%n].y);
+    for (int i = 0; i < n; ++i)
+    {
+        res += hypot(nodes[i].x - nodes[(i + 1) % n].x, nodes[i].y - nodes[(i + 1) % n].y);
     }
     return res;
 }
