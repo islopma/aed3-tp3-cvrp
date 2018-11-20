@@ -22,4 +22,4 @@ add_executable(cfrs cfrs_main.cpp)
 target_link_libraries(cfrs cvrp_lib cfrs_lib)
 
 add_executable(cfrs2 cfrs2_main.cpp)
-target_link_libraries(cfrs2 cvrp_lib cfrs2_lib union_find_lib)
+target_link_libraries(cfrs2 cvrp_lib cfrs_lib cfrs2_lib union_find_lib)

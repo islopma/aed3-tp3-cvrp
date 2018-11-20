@@ -90,7 +90,7 @@ vector<vector<Node>> make_groups_from_uf(vector<Node> &nodes, UnionFind &uf)
     return res;
 }
 
-vector<vector<Node>> clusterize(vector<Node> &nodes, double capacity)
+vector<vector<Node>> clusterize_kruskal(vector<Node> &nodes, double capacity)
 {
 
     int n = nodes.size();
