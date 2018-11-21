@@ -11,3 +11,5 @@ src/libcvrp_lib.a
 *.a
 *.vscode
 out/
+.idea
+cmake-build-debug
