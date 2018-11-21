@@ -4,6 +4,7 @@
 #include <tuple>
 #include <cmath>
 #include <algorithm>
+#include <numeric>
 
 #include "union_find.h"
 

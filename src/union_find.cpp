@@ -1,6 +1,7 @@
 #include "union_find.h"
 
 #include <algorithm>
+#include <numeric>
 
 UnionFind::UnionFind(int n)
 {
