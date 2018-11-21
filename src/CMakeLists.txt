@@ -32,3 +32,6 @@ target_link_libraries(cfrs cvrp_lib cfrs_lib)
 
 add_executable(cfrs2 cfrs2_main.cpp)
 target_link_libraries(cfrs2 cvrp_lib cfrs_lib cfrs2_lib union_find_lib)
+
+add_executable(golosa golosa/golosa_main.cpp)
+target_link_libraries(golosa cvrp_lib)
