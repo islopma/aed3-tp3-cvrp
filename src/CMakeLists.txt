@@ -36,14 +36,26 @@ target_link_libraries(savings_time cvrp_lib savings_lib)
 add_executable(simanneal simanneal/simanneal_main.cpp)
 target_link_libraries(simanneal cvrp_lib simanneal_lib savings_lib)
 
+add_executable(simanneal_time simanneal/simanneal_time.cpp)
+target_link_libraries(simanneal_time cvrp_lib simanneal_lib savings_lib)
+
 add_executable(cfrs cfrs_main.cpp)
 target_link_libraries(cfrs cvrp_lib cfrs_lib)
 
+add_executable(cfrs_time cfrs_time.cpp)
+target_link_libraries(cfrs_time cvrp_lib cfrs_lib)
+
 add_executable(cfrs2 cfrs2_main.cpp)
 target_link_libraries(cfrs2 cvrp_lib cfrs_lib cfrs2_lib union_find_lib)
+
+add_executable(cfrs2_time cfrs2_time.cpp)
+target_link_libraries(cfrs2_time cvrp_lib cfrs_lib cfrs2_lib union_find_lib)
 
 add_executable(golosa golosa/golosa_main.cpp)
 target_link_libraries(golosa cvrp_lib golosa_lib)
 
 add_executable(closest closest/closest_main.cpp)
 target_link_libraries(closest cvrp_lib closest_lib)
+
+add_executable(closest_time closest/closest_time.cpp)
+target_link_libraries(closest_time cvrp_lib closest_lib)
