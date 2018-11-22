@@ -27,6 +27,9 @@ target_link_libraries(cvrp cvrp_lib)
 add_executable(savings savings/savings_main.cpp)
 target_link_libraries(savings cvrp_lib savings_lib)
 
+add_executable(savings_time savings/savings_time.cpp)
+target_link_libraries(savings_time cvrp_lib savings_lib)
+
 add_executable(simanneal simanneal/simanneal_main.cpp)
 target_link_libraries(simanneal cvrp_lib simanneal_lib savings_lib)
 
