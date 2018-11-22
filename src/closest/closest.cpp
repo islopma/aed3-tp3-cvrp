@@ -33,10 +33,10 @@ size_t Closest::getClosestNeighbor(size_t node, int maxDemand)
     auto &nodes = _cvrp.getNodes();
     for(size_t i = 1; i < _availableNodes.size(); i++)
     {
-        if (_availableNodes[i] && i != node && _costs[node][i] < minCost && nodes[i].demand < maxDemand)
+        if (_availableNodes[i] && i != node && _costs[nodes[node].id][nodes[i].id] < minCost && nodes[i].demand <= maxDemand)
         {
             closest = i;
-            minCost = _costs[node][i];
+            minCost = _costs[nodes[node].id][nodes[i].id];
         }
     }
     return closest;
