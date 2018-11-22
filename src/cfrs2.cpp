@@ -153,7 +153,7 @@ int find_farthest_node(vector<Node> &nodes, vector<int> &_next, int first, vecto
     int n = nodes.size();
 
     int fartest = -1;
-    double max_dist = 0;
+    double max_dist = -1;
 
     for (int i = 0; i < n; ++i)
     {
@@ -221,6 +221,7 @@ vector<Node> farthest_insertion(vector<Node> &nodes)
         int pos = find_closest_edge(nodes, _next, p.first, fartest);
         _next[fartest] = _next[pos];
         _next[pos] = fartest;
+        in_cycle[fartest] = true;
     }
 
     vector<Node> res = {nodes[0]};
