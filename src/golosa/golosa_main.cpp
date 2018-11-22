@@ -1,4 +1,5 @@
 #include "golosa.h"
+#include "cvrp.h"
 #include <iostream>
 
 int main(int argc, char const *argv[]){
@@ -7,8 +8,11 @@ int main(int argc, char const *argv[]){
     auto result = cvrp.readInput();
     if(result != 0) return result;
 
-    auto golosa = Golosa(cvrp);
-    auto routes = golosa.algoGoloso();
+    vector<Node> nodes = cvrp.getNodes();
+    int capacity = cvrp.getCapacity();
+
+
+    auto routes = algoGoloso(nodes,capacity,cvrp);
 
     double totalCost = 0;
 

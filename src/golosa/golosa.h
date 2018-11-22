@@ -7,31 +7,24 @@
 
 using namespace std;
 
-class Golosa{
 
-private:
+    bool areThereNodesLeft(vector<bool> &usedNodes);
 
-    Cvrp _cvrp;
-    vector<Node> &_nodes = _cvrp.getNodes();
-    bool areThereNodesLeft();
-    int nodesSize = _cvrp.getNodes().size();
-    vector<bool> _usedNodes = vector<bool>(nodesSize, false);        //si el nodo esta usado aparece como true en su indice (nodeID-1)
+    vector<vector<double>> getDistances(vector<Node> &nodes);
 
-    vector<vector<double>> _distances = vector<vector<double>>(nodesSize,vector<double>(nodesSize,0)); //inicializo todas las dist en 0
-    void getDistances(vector<Node> &nodes);
+    int closestNeighbor(Node &node, int maxDemand, vector<vector<double>>& distances, vector<bool> usedNodes, vector<Node> &nodes, int candidato);
 
-    Node &closestNeighbor(Node &node, int maxDemand);
+    void getUsedNodes(vector<bool> &nodes, int size);
 
 
+    vector<Route> algoGoloso(vector<Node> &nodes,int capacity, Cvrp &cvrp);
 
-public:
-    Golosa(Cvrp &cvrp);
-    vector<Route> algoGoloso();
+    int areThereNodesWithSmallerDemand(Node &node , int maxDemand, vector<bool> _usedNodes, vector<Node> &_nodes);
+
+    void addNodeToRuta(Route &route, Node &node, const bool &isLast, vector<vector<double>> costs);
 
 
 
-
-};
 
 
 
