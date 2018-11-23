@@ -18,9 +18,6 @@ target_include_directories(cfrs2_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 add_library(union_find_lib STATIC union_find.cpp)
 target_include_directories(union_find_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
-add_library(golosa_lib STATIC golosa/golosa.cpp)
-target_include_directories(golosa_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-
 add_library(closest_lib STATIC closest/closest.cpp)
 target_include_directories(closest_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -50,9 +47,6 @@ target_link_libraries(cfrs2 cvrp_lib cfrs_lib cfrs2_lib union_find_lib)
 
 add_executable(cfrs2_time cfrs2_time.cpp)
 target_link_libraries(cfrs2_time cvrp_lib cfrs_lib cfrs2_lib union_find_lib)
-
-add_executable(golosa golosa/golosa_main.cpp)
-target_link_libraries(golosa cvrp_lib golosa_lib)
 
 add_executable(closest closest/closest_main.cpp)
 target_link_libraries(closest cvrp_lib closest_lib)
