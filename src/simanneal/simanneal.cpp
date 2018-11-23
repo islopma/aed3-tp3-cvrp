@@ -158,6 +158,8 @@ void Simanneal::moveNode(vector<Route> &routes, size_t firstRouteIndex,
     auto firstNode = firstNodes[firstNodeIndex];
     addNodeToRoute(secondRoute, *firstNode, secondNodeIndex);
     removeNodeFromRoute(firstRoute, firstNodeIndex);
+    // if firstRoute is empty, remove it as it can no longer be used
+    if (firstRoute.nodes.size() == 0) routes.erase(routes.begin() + firstRouteIndex);
 }
 
 void Simanneal::swapNodes(vector<Route> &routes, size_t firstRouteIndex,
