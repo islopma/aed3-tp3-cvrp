@@ -6,6 +6,8 @@
 #include <iostream>
 #include <cassert>
 
+using namespace std;
+
 vector<pair<double, int>> sort_by_angle(vector<Node> &nodes)
 {
     vector<pair<double, int>> angle_ids;

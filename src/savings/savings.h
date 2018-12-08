@@ -4,8 +4,6 @@
 #include "../cvrp.h"
 #include <vector>
 
-using namespace std;
-
 struct Saving
 {
     Node *first;
@@ -17,13 +15,14 @@ struct Saving
 
 class Savings
 {
-private:
+  private:
     Cvrp _cvrp;
 
-    vector<Saving> getSavings();
-public:
+    std::vector<Saving> getSavings();
+
+  public:
     Savings(Cvrp &cvrp);
-    vector<Route> findBestRoutes();
+    std::vector<Route> findBestRoutes();
 };
 
 #endif

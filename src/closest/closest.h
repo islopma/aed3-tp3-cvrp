@@ -4,22 +4,21 @@
 #include "../cvrp.h"
 #include <vector>
 
-using namespace std;
-
 class Closest
 {
-private:
+  private:
     Cvrp _cvrp;
-    vector<Route> _routes;
-    vector<bool> _availableNodes;
-    vector<vector<double>> _costs;
+    std::vector<Route> _routes;
+    std::vector<bool> _availableNodes;
+    std::vector<std::vector<double>> _costs;
 
-    Route* createNewRoute();
+    Route *createNewRoute();
     size_t getFirstAvailableNode();
     size_t getClosestNeighbor(size_t node, int maxDemand);
-public:
+
+  public:
     Closest(Cvrp &cvrp);
-    vector<Route> findBestRoutes();
+    std::vector<Route> findBestRoutes();
 };
 
 #endif

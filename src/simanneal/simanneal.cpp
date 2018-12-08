@@ -4,6 +4,8 @@
 #include <climits>
 #include <cmath>
 
+using namespace std;
+
 Simanneal::Simanneal(Cvrp &cvrp)
     : _cvrp(cvrp)
 {
@@ -22,7 +24,7 @@ double Simanneal::getAcceptanceProbability(double delta, double temp)
 
 double Simanneal::getUniformRandom()
 {
-    auto uniform = (double) rand() / (RAND_MAX + 1.0);
+    auto uniform = (double)rand() / (RAND_MAX + 1.0);
     return uniform;
 }
 
@@ -51,8 +53,10 @@ void Simanneal::InitParams(vector<Route> &routes)
                     {
                         auto delta = get10OpCost(costs, firstNodes, secondNodes, k, l);
                         auto absDelta = abs(delta);
-                        if (absDelta > T_s) T_s = absDelta;
-                        if (absDelta < T_f) T_f = absDelta;
+                        if (absDelta > T_s)
+                            T_s = absDelta;
+                        if (absDelta < T_f)
+                            T_f = absDelta;
                         ++Nfeas;
                     }
                     // (0,1) operator, insert secondNode before firstNode
@@ -60,18 +64,21 @@ void Simanneal::InitParams(vector<Route> &routes)
                     {
                         auto delta = get01OpCost(costs, firstNodes, secondNodes, k, l);
                         auto absDelta = abs(delta);
-                        if (absDelta > T_s) T_s = absDelta;
-                        if (absDelta < T_f) T_f = absDelta;
+                        if (absDelta > T_s)
+                            T_s = absDelta;
+                        if (absDelta < T_f)
+                            T_f = absDelta;
                         ++Nfeas;
                     }
                     // (1,1) operator, swap firstNode and secondNode
-                    if (firstNode->demand + secondRoute.demand - secondNode->demand <= capacity
-                        && secondNode->demand + firstRoute.demand - firstNode->demand <= capacity)
+                    if (firstNode->demand + secondRoute.demand - secondNode->demand <= capacity && secondNode->demand + firstRoute.demand - firstNode->demand <= capacity)
                     {
                         auto delta = get11OpCost(costs, firstNodes, secondNodes, k, l);
                         auto absDelta = abs(delta);
-                        if (absDelta > T_s) T_s = absDelta;
-                        if (absDelta < T_f) T_f = absDelta;
+                        if (absDelta > T_s)
+                            T_s = absDelta;
+                        if (absDelta < T_f)
+                            T_f = absDelta;
                         ++Nfeas;
                     }
                 }
@@ -101,55 +108,48 @@ vector<Route> Simanneal::shuffleRoutes(vector<Route> &routes)
     return shuffledRoutes;
 }
 
-double Simanneal::get10OpCost(vector<vector<double>> &costs, vector<Node*> &firstNodes,
-    vector<Node*> &secondNodes, size_t firstIndex, size_t secondIndex)
+double Simanneal::get10OpCost(vector<vector<double>> &costs, vector<Node *> &firstNodes,
+                              vector<Node *> &secondNodes, size_t firstIndex, size_t secondIndex)
 {
     auto depotId = _cvrp.getDepotId();
     auto firstNode = firstNodes[firstIndex];
     auto secondNode = secondNodes[secondIndex];
-    auto prevFirstId = firstIndex == 0 ? depotId : firstNodes[firstIndex-1]->id;
-    auto nextFirstId = firstIndex == firstNodes.size() - 1 ? depotId : firstNodes[firstIndex+1]->id;
-    auto prevSecondId = secondIndex == 0 ? depotId : secondNodes[secondIndex-1]->id;
-    auto delta = - costs[prevFirstId][firstNode->id] - costs[firstNode->id][nextFirstId]
-        + costs[prevFirstId][nextFirstId] - costs[prevSecondId][secondNode->id]
-        + costs[prevSecondId][firstNode->id] + costs[firstNode->id][secondNode->id];
+    auto prevFirstId = firstIndex == 0 ? depotId : firstNodes[firstIndex - 1]->id;
+    auto nextFirstId = firstIndex == firstNodes.size() - 1 ? depotId : firstNodes[firstIndex + 1]->id;
+    auto prevSecondId = secondIndex == 0 ? depotId : secondNodes[secondIndex - 1]->id;
+    auto delta = -costs[prevFirstId][firstNode->id] - costs[firstNode->id][nextFirstId] + costs[prevFirstId][nextFirstId] - costs[prevSecondId][secondNode->id] + costs[prevSecondId][firstNode->id] + costs[firstNode->id][secondNode->id];
     return delta;
 }
 
-double Simanneal::get01OpCost(vector<vector<double>> &costs, vector<Node*> &firstNodes,
-    vector<Node*> &secondNodes, size_t firstIndex, size_t secondIndex)
+double Simanneal::get01OpCost(vector<vector<double>> &costs, vector<Node *> &firstNodes,
+                              vector<Node *> &secondNodes, size_t firstIndex, size_t secondIndex)
 {
     auto depotId = _cvrp.getDepotId();
     auto firstNode = firstNodes[firstIndex];
     auto secondNode = secondNodes[secondIndex];
-    auto prevFirstId = firstIndex == 0 ? depotId : firstNodes[firstIndex-1]->id;
-    auto prevSecondId = secondIndex == 0 ? depotId : secondNodes[secondIndex-1]->id;
-    auto nextSecondId = secondIndex == secondNodes.size() - 1 ? depotId : secondNodes[secondIndex+1]->id;
-    auto delta = - costs[prevSecondId][secondNode->id] - costs[secondNode->id][nextSecondId]
-        + costs[prevSecondId][nextSecondId] - costs[prevFirstId][firstNode->id]
-        + costs[prevFirstId][secondNode->id] + costs[secondNode->id][firstNode->id];
+    auto prevFirstId = firstIndex == 0 ? depotId : firstNodes[firstIndex - 1]->id;
+    auto prevSecondId = secondIndex == 0 ? depotId : secondNodes[secondIndex - 1]->id;
+    auto nextSecondId = secondIndex == secondNodes.size() - 1 ? depotId : secondNodes[secondIndex + 1]->id;
+    auto delta = -costs[prevSecondId][secondNode->id] - costs[secondNode->id][nextSecondId] + costs[prevSecondId][nextSecondId] - costs[prevFirstId][firstNode->id] + costs[prevFirstId][secondNode->id] + costs[secondNode->id][firstNode->id];
     return delta;
 }
 
-double Simanneal::get11OpCost(vector<vector<double>> &costs, vector<Node*> &firstNodes,
-    vector<Node*> &secondNodes, size_t firstIndex, size_t secondIndex)
+double Simanneal::get11OpCost(vector<vector<double>> &costs, vector<Node *> &firstNodes,
+                              vector<Node *> &secondNodes, size_t firstIndex, size_t secondIndex)
 {
     auto depotId = _cvrp.getDepotId();
     auto firstNode = firstNodes[firstIndex];
     auto secondNode = secondNodes[secondIndex];
-    auto prevFirstId = firstIndex == 0 ? depotId : firstNodes[firstIndex-1]->id;
-    auto nextFirstId = firstIndex == firstNodes.size() - 1 ? depotId : firstNodes[firstIndex+1]->id;
-    auto prevSecondId = secondIndex == 0 ? depotId : secondNodes[secondIndex-1]->id;
-    auto nextSecondId = secondIndex == secondNodes.size() - 1 ? depotId : secondNodes[secondIndex+1]->id;
-    auto delta = - costs[prevFirstId][firstNode->id] - costs[firstNode->id][nextFirstId]
-        + costs[prevFirstId][secondNode->id] + costs[secondNode->id][nextFirstId]
-        - costs[prevSecondId][secondNode->id] - costs[secondNode->id][nextSecondId]
-        + costs[prevSecondId][firstNode->id] + costs[firstNode->id][nextSecondId];
+    auto prevFirstId = firstIndex == 0 ? depotId : firstNodes[firstIndex - 1]->id;
+    auto nextFirstId = firstIndex == firstNodes.size() - 1 ? depotId : firstNodes[firstIndex + 1]->id;
+    auto prevSecondId = secondIndex == 0 ? depotId : secondNodes[secondIndex - 1]->id;
+    auto nextSecondId = secondIndex == secondNodes.size() - 1 ? depotId : secondNodes[secondIndex + 1]->id;
+    auto delta = -costs[prevFirstId][firstNode->id] - costs[firstNode->id][nextFirstId] + costs[prevFirstId][secondNode->id] + costs[secondNode->id][nextFirstId] - costs[prevSecondId][secondNode->id] - costs[secondNode->id][nextSecondId] + costs[prevSecondId][firstNode->id] + costs[firstNode->id][nextSecondId];
     return delta;
 }
 
 void Simanneal::moveNode(vector<Route> &routes, size_t firstRouteIndex,
-    size_t secondRouteIndex, size_t firstNodeIndex, size_t secondNodeIndex)
+                         size_t secondRouteIndex, size_t firstNodeIndex, size_t secondNodeIndex)
 {
     // insert firstNode before secondNode
     auto &firstRoute = routes[firstRouteIndex];
@@ -159,11 +159,12 @@ void Simanneal::moveNode(vector<Route> &routes, size_t firstRouteIndex,
     addNodeToRoute(secondRoute, *firstNode, secondNodeIndex);
     removeNodeFromRoute(firstRoute, firstNodeIndex);
     // if firstRoute is empty, remove it as it can no longer be used
-    if (firstRoute.nodes.size() == 0) routes.erase(routes.begin() + firstRouteIndex);
+    if (firstRoute.nodes.size() == 0)
+        routes.erase(routes.begin() + firstRouteIndex);
 }
 
 void Simanneal::swapNodes(vector<Route> &routes, size_t firstRouteIndex,
-    size_t secondRouteIndex, size_t firstNodeIndex, size_t secondNodeIndex)
+                          size_t secondRouteIndex, size_t firstNodeIndex, size_t secondNodeIndex)
 {
     auto &firstRoute = routes[firstRouteIndex];
     auto &secondRoute = routes[secondRouteIndex];
@@ -178,10 +179,8 @@ void Simanneal::swapNodes(vector<Route> &routes, size_t firstRouteIndex,
     firstRoute.demand += secondNode->demand - firstNode->demand;
     secondRoute.demand += firstNode->demand - secondNode->demand;
     auto &costs = _cvrp.getCosts();
-    firstRoute.cost += costs[prevFirstId][secondNode->id] + costs[secondNode->id][nextFirstId]
-        - costs[prevFirstId][firstNode->id] - costs[firstNode->id][nextFirstId];
-    secondRoute.cost += costs[prevSecondId][firstNode->id] + costs[firstNode->id][nextSecondId]
-        - costs[prevSecondId][secondNode->id] - costs[secondNode->id][nextSecondId];
+    firstRoute.cost += costs[prevFirstId][secondNode->id] + costs[secondNode->id][nextFirstId] - costs[prevFirstId][firstNode->id] - costs[firstNode->id][nextFirstId];
+    secondRoute.cost += costs[prevSecondId][firstNode->id] + costs[firstNode->id][nextSecondId] - costs[prevSecondId][secondNode->id] - costs[secondNode->id][nextSecondId];
     firstNodes[firstNodeIndex] = secondNode;
     secondNodes[secondNodeIndex] = firstNode;
 }
@@ -222,7 +221,7 @@ double Simanneal::getRoutesCost(vector<Route> &routes)
 
 double Simanneal::coolTemperature(double T_k, int k)
 {
-    auto B_k = (T_s - T_f) / ((alpha + gamma * sqrt(k) )* T_s * T_f);
+    auto B_k = (T_s - T_f) / ((alpha + gamma * sqrt(k)) * T_s * T_f);
     return T_k / (1 + B_k * T_k);
 }
 
@@ -235,7 +234,7 @@ vector<Route> Simanneal::copyRoutes(vector<Route> &routes)
         newRoute.id = route.id;
         newRoute.demand = route.demand;
         newRoute.cost = route.cost;
-        newRoute.nodes = vector<Node*>();
+        newRoute.nodes = vector<Node *>();
         for (auto node : route.nodes)
         {
             auto newNode = new Node(node->id, node->x, node->y, node->demand);
@@ -268,18 +267,21 @@ vector<Route> Simanneal::findBestRoutes()
     auto capacity = _cvrp.getCapacity();
     auto &costs = _cvrp.getCosts();
 
-    while(resets < R){
+    while (resets < R)
+    {
         auto solutionAccepted = false;
         auto routesIndexes = getShuffledIndexes(routes.size());
         for (size_t i = 0; i < routesIndexes.size() - 1; ++i)
         {
-            if (solutionAccepted) break;
+            if (solutionAccepted)
+                break;
             auto firstRouteIndex = routesIndexes[i];
             auto firstRoute = routes[firstRouteIndex];
             auto firstNodes = firstRoute.nodes;
             for (size_t j = i + 1; j < routesIndexes.size(); ++j)
             {
-                if (solutionAccepted) break;
+                if (solutionAccepted)
+                    break;
                 auto secondRouteIndex = routesIndexes[j];
                 auto secondRoute = routes[secondRouteIndex];
                 auto secondNodes = secondRoute.nodes;
@@ -287,7 +289,8 @@ vector<Route> Simanneal::findBestRoutes()
                 auto secondNodesIndexes = getShuffledIndexes(secondNodes.size());
                 for (size_t firstNodeIndex : firstNodesIndexes)
                 {
-                    if (solutionAccepted) break;
+                    if (solutionAccepted)
+                        break;
                     auto firstNode = firstNodes[firstNodeIndex];
                     for (size_t secondNodeIndex : secondNodesIndexes)
                     {
@@ -335,8 +338,7 @@ vector<Route> Simanneal::findBestRoutes()
                             }
                         }
                         // (1,1) operator, swap firstNode and secondNode
-                        if (firstNode->demand + secondRoute.demand - secondNode->demand <= capacity
-                            && secondNode->demand + firstRoute.demand - firstNode->demand <= capacity)
+                        if (firstNode->demand + secondRoute.demand - secondNode->demand <= capacity && secondNode->demand + firstRoute.demand - firstNode->demand <= capacity)
                         {
                             auto delta = get11OpCost(costs, firstNodes, secondNodes, firstNodeIndex, secondNodeIndex);
                             if (delta <= 0 || getAcceptanceProbability(delta, T_k) >= getUniformRandom())
@@ -360,7 +362,8 @@ vector<Route> Simanneal::findBestRoutes()
                 }
             }
         }
-        if (solutionAccepted) continue;
+        if (solutionAccepted)
+            continue;
         // end cycle search with increment rule
         T_r = max(T_r / 2, T_b);
         T_k = T_r;

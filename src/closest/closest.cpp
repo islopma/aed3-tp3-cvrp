@@ -1,15 +1,18 @@
 #include "closest.h"
 #include <limits>
 
-Closest::Closest(Cvrp &cvrp)
-    : _cvrp(cvrp) {
-        _routes = vector<Route>();
-        _availableNodes = vector<bool>(cvrp.getNodes().size(), true);
-        _availableNodes[0] = false;
-        _costs = cvrp.getCosts();
-    }
+using namespace std;
 
-Route* Closest::createNewRoute()
+Closest::Closest(Cvrp &cvrp)
+    : _cvrp(cvrp)
+{
+    _routes = vector<Route>();
+    _availableNodes = vector<bool>(cvrp.getNodes().size(), true);
+    _availableNodes[0] = false;
+    _costs = cvrp.getCosts();
+}
+
+Route *Closest::createNewRoute()
 {
     auto route = Route();
     route.id = _routes.size();
@@ -19,9 +22,10 @@ Route* Closest::createNewRoute()
 
 size_t Closest::getFirstAvailableNode()
 {
-    for(size_t i = 1; i < _availableNodes.size(); i++)
+    for (size_t i = 1; i < _availableNodes.size(); i++)
     {
-        if (_availableNodes[i]) return i;
+        if (_availableNodes[i])
+            return i;
     }
     return 0;
 }
@@ -31,7 +35,7 @@ size_t Closest::getClosestNeighbor(size_t node, int maxDemand)
     size_t closest = 0;
     double minCost = numeric_limits<double>::max();
     auto &nodes = _cvrp.getNodes();
-    for(size_t i = 1; i < _availableNodes.size(); i++)
+    for (size_t i = 1; i < _availableNodes.size(); i++)
     {
         if (_availableNodes[i] && i != node && _costs[nodes[node].id][nodes[i].id] < minCost && nodes[i].demand <= maxDemand)
         {

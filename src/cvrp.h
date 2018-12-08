@@ -4,8 +4,6 @@
 #include <string>
 #include <vector>
 
-using namespace std;
-
 struct Node
 {
     int id;
@@ -21,7 +19,7 @@ struct Node
 struct Route
 {
     int id;
-    vector<Node*> nodes;
+    std::vector<Node *> nodes;
     double cost;
     int demand;
 
@@ -30,23 +28,24 @@ struct Route
 
 class Cvrp
 {
-private:
-    string _name;
-    string _comment;
+  private:
+    std::string _name;
+    std::string _comment;
     int _dimension;
     int _capacity;
-    vector<Node> _nodes;
+    std::vector<Node> _nodes;
     int _depotId;
-    vector<vector<double>> _costs;
+    std::vector<std::vector<double>> _costs;
 
-    vector<string> tokenizeLine();
-public:
+    std::vector<std::string> tokenizeLine();
+
+  public:
     Cvrp();
     int readInput();
-    vector<Node>& getNodes();
-    int& getCapacity();
-    int& getDepotId();
-    vector<vector<double>>& getCosts();
+    std::vector<Node> &getNodes();
+    int &getCapacity();
+    int &getDepotId();
+    std::vector<std::vector<double>> &getCosts();
     void addNodeToRoute(Route &route, Node &node, const bool &isLast);
 };
 

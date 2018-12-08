@@ -5,6 +5,8 @@
 #include <map>
 #include <sstream>
 
+using namespace std;
+
 Node::Node(const int id, const double x, const double y, const int demand)
     : id(id), x(x), y(y), demand(demand), routeId(-1) {}
 
@@ -16,7 +18,7 @@ double Node::distance(const Node &other)
 
 Route::Route()
 {
-    nodes = vector<Node*>();
+    nodes = vector<Node *>();
     cost = 0;
     demand = 0;
 }
@@ -32,15 +34,17 @@ Cvrp::Cvrp()
     _costs = vector<vector<double>>();
 }
 
-vector<Node>& Cvrp::getNodes(){
+vector<Node> &Cvrp::getNodes()
+{
     return this->_nodes;
 }
 
-int& Cvrp::getCapacity(){
+int &Cvrp::getCapacity()
+{
     return this->_capacity;
 }
 
-int& Cvrp::getDepotId()
+int &Cvrp::getDepotId()
 {
     return _depotId;
 }
@@ -56,7 +60,7 @@ int Cvrp::readInput()
             cerr << "There is an error in the specification format" << endl;
             return -1;
         }
-        
+
         if (tokens[0] == "NAME")
         {
             _name = tokens[2];
@@ -64,7 +68,7 @@ int Cvrp::readInput()
         else if (tokens[0] == "COMMENT")
         {
             _comment = "";
-            for (size_t token = 2; token < tokens.size(); ++ token)
+            for (size_t token = 2; token < tokens.size(); ++token)
             {
                 _comment += tokens[token] + " ";
             }
@@ -140,7 +144,7 @@ int Cvrp::readInput()
         }
     }
     _nodes = vector<Node>();
-    for (auto const& node : node_coord)
+    for (auto const &node : node_coord)
     {
         auto id = node.first;
         auto x = node.second.first;
@@ -151,9 +155,10 @@ int Cvrp::readInput()
     return 0;
 }
 
-vector<vector<double>>& Cvrp::getCosts()
+vector<vector<double>> &Cvrp::getCosts()
 {
-    if (!_costs.empty()) return _costs;
+    if (!_costs.empty())
+        return _costs;
     auto nodesNumber = _nodes.size();
     _costs = vector<vector<double>>(nodesNumber + 1, vector<double>(nodesNumber + 1, -1));
     for (size_t i = 0; i < nodesNumber - 1; ++i)
@@ -177,7 +182,8 @@ void Cvrp::addNodeToRoute(Route &route, Node &node, const bool &isLast)
     route.demand += node.demand;
     node.routeId = route.id;
     auto costs = getCosts();
-    if (isFirst) {
+    if (isFirst)
+    {
         nodes.push_back(&node);
         route.cost += 2 * costs[_depotId][node.id];
     }

@@ -5,10 +5,10 @@
 
 #include "cvrp.h"
 
-vector<vector<Node>> clusterize(vector<Node>& nodes, int capacity);
+std::vector<std::vector<Node>> clusterize(std::vector<Node> &nodes, int capacity);
 
-void route(vector<Node>& nodes);
+void route(std::vector<Node> &nodes);
 
-double get_cost(vector<Node>& nodes);
+double get_cost(std::vector<Node> &nodes);
 
 #endif

@@ -5,6 +5,8 @@
 #include <iostream>
 #include <chrono>
 
+using namespace std;
+
 int main(int argc, char const *argv[])
 {
     auto cvrp = Cvrp();
@@ -26,7 +28,7 @@ int main(int argc, char const *argv[])
     }
 
     auto end = chrono::high_resolution_clock::now();
-    cout << chrono::duration_cast<std::chrono::nanoseconds>(end-start).count() << endl;
+    cout << chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() << endl;
 
     return 0;
 }

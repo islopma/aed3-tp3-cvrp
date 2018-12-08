@@ -5,8 +5,8 @@
 
 #include "cvrp.h"
 
-vector<vector<Node>> clusterize_kruskal(vector<Node> &nodes, double capacity);
+std::vector<std::vector<Node>> clusterize_kruskal(std::vector<Node> &nodes, double capacity);
 
-vector<Node> farthest_insertion(vector<Node> &nodes);
+std::vector<Node> farthest_insertion(std::vector<Node> &nodes);
 
 #endif
