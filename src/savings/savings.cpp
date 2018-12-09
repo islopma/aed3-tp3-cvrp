@@ -27,6 +27,8 @@ vector<Saving> Savings::getSavings()
             if (second.id == depotId)
                 continue;
             auto savingCost = costs[depotId][first.id] + costs[depotId][second.id] - costs[first.id][second.id];
+            if (savingCost <= 0)
+                continue;
             auto saving = Saving(&first, &second, savingCost);
             savings.push_back(saving);
         }
