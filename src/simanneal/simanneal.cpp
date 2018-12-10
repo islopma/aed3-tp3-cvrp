@@ -308,8 +308,8 @@ vector<Route> Simanneal::findBestRoutes()
                                     C_b = newCost;
                                     S_b = copyRoutes(routes);
                                     T_b = T_k;
+                                    resets = 0;
                                 }
-                                resets = 0;
                                 solutionAccepted = true;
                                 T_k = coolTemperature(T_k, k);
                                 ++k;
@@ -329,8 +329,8 @@ vector<Route> Simanneal::findBestRoutes()
                                     C_b = newCost;
                                     S_b = copyRoutes(routes);
                                     T_b = T_k;
+                                    resets = 0;
                                 }
-                                resets = 0;
                                 solutionAccepted = true;
                                 T_k = coolTemperature(T_k, k);
                                 ++k;
@@ -350,8 +350,8 @@ vector<Route> Simanneal::findBestRoutes()
                                     C_b = newCost;
                                     S_b = copyRoutes(routes);
                                     T_b = T_k;
+                                    resets = 0;
                                 }
-                                resets = 0;
                                 solutionAccepted = true;
                                 T_k = coolTemperature(T_k, k);
                                 ++k;
