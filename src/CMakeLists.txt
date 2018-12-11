@@ -31,10 +31,10 @@ add_executable(savings_time savings/savings_time.cpp)
 target_link_libraries(savings_time cvrp_lib savings_lib)
 
 add_executable(simanneal simanneal/simanneal_main.cpp)
-target_link_libraries(simanneal cvrp_lib simanneal_lib savings_lib)
+target_link_libraries(simanneal cvrp_lib simanneal_lib savings_lib closest_lib)
 
 add_executable(simanneal_time simanneal/simanneal_time.cpp)
-target_link_libraries(simanneal_time cvrp_lib simanneal_lib savings_lib)
+target_link_libraries(simanneal_time cvrp_lib simanneal_lib savings_lib closest_lib)
 
 add_executable(cfrs cfrs_main.cpp)
 target_link_libraries(cfrs cvrp_lib cfrs_lib)

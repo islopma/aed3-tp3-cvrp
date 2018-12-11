@@ -2,6 +2,7 @@
 #define SIMANNEAL_H_INCLUDED
 
 #include "../cvrp.h"
+#include <string>
 
 class Simanneal
 {
@@ -12,6 +13,9 @@ class Simanneal
     int alpha;
     int gamma;
     int R;
+    std::string _initialSolution;
+    bool _swapOnly;
+    bool _progressMode;
 
     double getAcceptanceProbability(double delta, double temp);
     double getUniformRandom();
@@ -36,6 +40,7 @@ class Simanneal
 
   public:
     Simanneal(Cvrp &cvrp);
+    Simanneal(Cvrp &cvrp, int R, std::string initialSolution, bool swapOnly, bool progressMode);
     std::vector<Route> findBestRoutes();
 };
 

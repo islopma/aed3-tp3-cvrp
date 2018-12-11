@@ -20,3 +20,10 @@
 
 Los algoritmos reciben por entrada estándar una instancia de CVRP, por ejemplo:
     ./savings < A-n37-k5.vrp
+
+Adicionalmente, simanneal puede recibir los siguientes parámetros:
+    simanneal [R=cantidad de resets] [initialSolution={Savings,Closest}] [SwapOnly=solo usa swap, no hace insert] [ProgressMode=imprime temperatura y costo de cada solucion que explora]
+    e.g.,:
+        ./simanneal 5 Savings SwapOnly ProgressMode < A-n37-k5.vrp
+        ./simanneal 3 Closest < A-n37-k5.vrp
+Ídem para simanneal_time excepto por 'ProgressMode'

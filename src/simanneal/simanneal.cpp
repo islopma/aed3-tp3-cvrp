@@ -1,19 +1,23 @@
 #include "simanneal.h"
 #include "../savings/savings.h"
+#include "../closest/closest.h"
 #include <algorithm>
 #include <climits>
 #include <cmath>
+#include <iostream>
 
 using namespace std;
 
 Simanneal::Simanneal(Cvrp &cvrp)
-    : _cvrp(cvrp)
+    : Simanneal(cvrp, 3, "Savings", false, false) {}
+
+Simanneal::Simanneal(Cvrp &cvrp, int R, std::string initialSolution, bool swapOnly, bool progressMode)
+    : _cvrp(cvrp), R(R), _initialSolution(initialSolution), _swapOnly(swapOnly), _progressMode(progressMode)
 {
     T_s = 0;
     T_f = INT_MAX;
     alpha = 0;
     gamma = 0;
-    R = 3;
 }
 
 double Simanneal::getAcceptanceProbability(double delta, double temp)
@@ -49,7 +53,7 @@ void Simanneal::InitParams(vector<Route> &routes)
                 {
                     auto secondNode = secondNodes[l];
                     // (1,0) operator, insert firstNode before secondNode
-                    if (firstNode->demand + secondRoute.demand <= capacity)
+                    if (!_swapOnly && firstNode->demand + secondRoute.demand <= capacity)
                     {
                         auto delta = get10OpCost(costs, firstNodes, secondNodes, k, l);
                         auto absDelta = abs(delta);
@@ -60,7 +64,7 @@ void Simanneal::InitParams(vector<Route> &routes)
                         ++Nfeas;
                     }
                     // (0,1) operator, insert secondNode before firstNode
-                    if (secondNode->demand + firstRoute.demand <= capacity)
+                    if (!_swapOnly && secondNode->demand + firstRoute.demand <= capacity)
                     {
                         auto delta = get01OpCost(costs, firstNodes, secondNodes, k, l);
                         auto absDelta = abs(delta);
@@ -248,8 +252,23 @@ vector<Route> Simanneal::copyRoutes(vector<Route> &routes)
 
 vector<Route> Simanneal::findBestRoutes()
 {
-    auto savings = Savings(_cvrp);
-    auto routes = savings.findBestRoutes();
+    vector<Route> routes;
+    if (_initialSolution == "Savings")
+    {
+        auto savings = Savings(_cvrp);
+        auto bestRoutes = savings.findBestRoutes();
+        routes = copyRoutes(bestRoutes);
+    }
+    else if (_initialSolution == "Closest")
+    {
+        auto closest = Closest(_cvrp);
+        auto bestRoutes = closest.findBestRoutes();
+        routes = copyRoutes(bestRoutes);
+    } else {
+        cerr << "Invalid initial solution: " << _initialSolution << endl;
+        return vector<Route>();
+    }
+
     InitParams(routes);
 
     // T_r is the reset temperature
@@ -269,6 +288,8 @@ vector<Route> Simanneal::findBestRoutes()
 
     while (resets < R)
     {
+        if (_progressMode)
+            cout << T_k << " " << getRoutesCost(routes) << endl;
         auto solutionAccepted = false;
         auto routesIndexes = getShuffledIndexes(routes.size());
         for (size_t i = 0; i < routesIndexes.size() - 1; ++i)
@@ -296,7 +317,7 @@ vector<Route> Simanneal::findBestRoutes()
                     {
                         auto secondNode = secondNodes[secondNodeIndex];
                         // (1,0) operator, insert firstNode before secondNode
-                        if (firstNode->demand + secondRoute.demand <= capacity)
+                        if (!_swapOnly && firstNode->demand + secondRoute.demand <= capacity)
                         {
                             auto delta = get10OpCost(costs, firstNodes, secondNodes, firstNodeIndex, secondNodeIndex);
                             if (delta <= 0 || getAcceptanceProbability(delta, T_k) >= getUniformRandom())
@@ -317,7 +338,7 @@ vector<Route> Simanneal::findBestRoutes()
                             }
                         }
                         // (0,1) operator, insert secondNode before firstNode
-                        if (secondNode->demand + firstRoute.demand <= capacity)
+                        if (!_swapOnly && secondNode->demand + firstRoute.demand <= capacity)
                         {
                             auto delta = get01OpCost(costs, firstNodes, secondNodes, firstNodeIndex, secondNodeIndex);
                             if (delta <= 0 || getAcceptanceProbability(delta, T_k) >= getUniformRandom())
@@ -368,6 +389,8 @@ vector<Route> Simanneal::findBestRoutes()
         T_r = max(T_r / 2, T_b);
         T_k = T_r;
         ++resets;
+        if (_progressMode)
+            cout << "RESET" << endl;
     }
 
     return S_b;
